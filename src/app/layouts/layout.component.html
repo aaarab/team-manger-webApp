@@ -1,0 +1,6 @@
+<p-toast [position]="'top-right'"></p-toast>
+<p-confirmDialog [style]="{width: '30vw'}"></p-confirmDialog>
+
+<app-header *ngIf="layout?.appHeaderDisplay"></app-header>
+  <router-outlet></router-outlet>
+<app-footer *ngIf="layout?.appFooterDisplay"></app-footer>
