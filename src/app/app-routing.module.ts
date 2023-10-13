@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { errorRoute } from "./layouts/error/error.route";
+import {UserRouteAccessService} from "./core/auth/user-route-access.service";
 
 @NgModule({
   imports: [RouterModule.forRoot([
@@ -11,6 +12,11 @@ import { errorRoute } from "./layouts/error/error.route";
     {
       path: '',
       loadChildren: () => import('./entities/entity-routing.module').then(m => m.EntityRoutingModule)
+    },
+    {
+      path: 'search',
+      loadComponent: () => import('./search/search.component').then(m => m.SearchComponent),
+      canActivate: [UserRouteAccessService],
     },
     ...errorRoute,
   ])],
