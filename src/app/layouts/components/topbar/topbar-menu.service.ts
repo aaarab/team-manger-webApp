@@ -24,7 +24,12 @@ export class TopbarMenuService {
       {
         label: 'Users',
         icon: 'users',
-        routerLink: ['/users']
+        routerLink: ['/user']
+      },
+      {
+        label: 'Profile',
+        icon: 'user',
+        routerLink: ['/user/profile']
       }
     ];
   }

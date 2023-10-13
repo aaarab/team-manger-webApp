@@ -1,0 +1,19 @@
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-4">
+      <div class="card p-3">
+        <p-avatar icon="pi pi-user" styleClass="mr-2" size="xlarge" shape="circle"></p-avatar>
+        <p>Name: {{ account.name }}</p>
+        <p>Email: {{ account.email }}</p>
+        <p>Address: {{ account.address ?? '-' }}</p>
+        <p>Phone: {{ account.phone ?? '-'  }}</p>
+      </div>
+    </div>
+    <div class="col-8">
+      <div class="card p-3">
+        <h3>Update Profile</h3>
+        <app-user-update [user]="user"></app-user-update>
+      </div>
+    </div>
+  </div>
+</div>

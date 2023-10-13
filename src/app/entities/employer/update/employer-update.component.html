@@ -1,10 +1,10 @@
 <div class="d-flex justify-content-center">
-  <div class="col-8">
+  <div class="col-8 mt-3">
+    <h2 id="employer-heading" data-cy="EmployerCreateUpdateHeading">
+      <ng-container *ngIf="editForm.value.id">Edit a Employer</ng-container>
+      <ng-container *ngIf="!editForm.value.id">Create a New Employer</ng-container>
+    </h2>
     <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-      <h2 id="employer-heading" data-cy="EmployerCreateUpdateHeading">
-        <ng-container *ngIf="editForm.value.id">Edit a Employer</ng-container>
-        <ng-container *ngIf="!editForm.value.id">Create a New Employer</ng-container>
-      </h2>
       <div class="p-fluid">
         <div class="mb-3">
           <label class="form-label" for="field_name" class="label-asterisk">Name</label>
@@ -86,9 +86,7 @@
             </p-message>
           </ng-container>
         </div>
-
       </div>
-
       <div>
         <button
           (click)="previousState()"
@@ -106,7 +104,8 @@
           [disabled]="isSaving"
           [label]="'view'"
           data-cy="entityViewButton"
-          class="p-button-success mx-1"
+          class="p-button-success"
+          style="margin-left: .5rem"
           icon="pi pi-eye"
           id="view-entity"
           pButton
@@ -116,24 +115,12 @@
           [disabled]="isSaving"
           [label]="'Save'"
           data-cy="entityCreateSaveButton"
+          style="margin-left: .5rem;"
           icon="pi pi-save"
           id="save-entity"
           pButton
           type="submit"
         ></button>
-<!--        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">-->
-<!--          <span>Cancel</span>-->
-<!--        </button>-->
-<!--        <button-->
-<!--          type="submit"-->
-<!--          id="save-entity"-->
-<!--          data-cy="entityCreateSaveButton"-->
-<!--          [disabled]="isSaving"-->
-<!--          class="btn btn-primary"-->
-<!--          style="margin-left: .5rem"-->
-<!--        >-->
-<!--          &nbsp;<span>Save</span>-->
-<!--        </button>-->
       </div>
     </form>
   </div>

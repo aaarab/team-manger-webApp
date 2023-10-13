@@ -1,0 +1,125 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8 mt-3">
+    <h2
+      *ngIf="!embedded"
+      class="title"
+      data-cy="UserCreateUpdateHeading"
+      id="user-heading"
+    >
+      <ng-container *ngIf="editForm.value.id">Edit a User</ng-container>
+      <ng-container *ngIf="!editForm.value.id">Create a New User</ng-container>
+    </h2>
+    <form (ngSubmit)="save()" [formGroup]="editForm" name="editForm" novalidate role="form">
+      <div class="p-fluid">
+        <div class="">
+          <label  class="label-asterisk"
+                  for="field_name">Name</label>
+          <input data-cy="name" formControlName="name" id="field_name" name="name" pInputText type="text"/>
+          <div class="validation-messages">
+            <ng-container
+              *ngIf="editForm.controls.name.errors && (editForm.controls.name.dirty || editForm.controls.name.touched)">
+              <p-message
+                *ngIf="editForm.controls.name.errors['required']"
+                text="This field is required"
+                severity="error"
+              >
+              </p-message>
+            </ng-container>
+          </div>
+        </div>
+        <div class="mt-3">
+          <label for="field_email" class="label-asterisk">Email</label>
+          <input data-cy="email" formControlName="email" id="field_email" name="email" pInputText type="text"/>
+          <div class="validation-messages">
+            <ng-container
+              *ngIf="editForm.controls.email.errors && (editForm.controls.email.dirty || editForm.controls.email.touched)">
+              <p-message
+                *ngIf="editForm.controls.email.errors.required"
+                text="This field is required"
+                severity="error"
+              >
+              </p-message>
+              <p-message
+                *ngIf="editForm.controls.email.errors.email"
+                text="This field should be a valid email."
+                severity="error"
+              >
+              </p-message>
+            </ng-container>
+          </div>
+        </div>
+
+        <div *ngIf="embedded" class="mt-3">
+          <label for="field_password" class="label-asterisk">password</label>
+          <input data-cy="password" formControlName="password" id="field_password" name="password" pInputText type="password"/>
+          <div class="validation-messages">
+            <ng-container
+              *ngIf="editForm.controls.password.errors && (editForm.controls.password.dirty || editForm.controls.password.touched)">
+              <p-message
+                *ngIf="editForm.controls.password.errors.maxLength"
+                [text]="'This field cannot be longer than '+ 60 +' characters.'"
+                severity="error"
+              >
+              </p-message>
+            </ng-container>
+            <app-password-strength-bar
+              *ngIf="editForm.controls.password.value"
+              [passwordToCheck]="editForm.controls.password.value!"
+            ></app-password-strength-bar>
+          </div>
+        </div>
+
+        <div class="mt-3">
+          <label for="field_phone">Phone</label>
+          <input data-cy="phone" formControlName="phone" id="field_phone" name="phone" pInputText type="text"/>
+        </div>
+        <div class="mt-4">
+          <label for="field_address">Address</label>
+          <input data-cy="address" formControlName="address" id="field_address" name="address" pInputText type="text"/>
+        </div>
+        <div class="mt-3">
+          <div class="field">
+            <label for="field_birthday">BirthDay</label>
+            <p-calendar data-cy="displayed_birthday" id="field_birthday" formControlName="birthday" name="birthday" [showIcon]="true"></p-calendar>
+          </div>
+        </div>
+      </div>
+      <div class="mt-3">
+        <button
+          *ngIf="!embedded"
+          (click)="previousState()"
+          [label]="'Cancel'"
+          class="p-button-secondary"
+          data-cy="entityCreateCancelButton"
+          icon="pi pi-ban"
+          id="cancel-save"
+          pButton
+          type="button"
+        ></button>
+        <button
+          *ngIf="editForm.value.id && !embedded"
+          [routerLink]="['/item', editForm.value.id, 'view']"
+          [disabled]="isSaving"
+          [label]="'view'"
+          data-cy="entityViewButton"
+          class="p-button-success"
+          style="margin-left: .5rem;"
+          icon="pi pi-eye"
+          id="view-entity"
+          pButton
+          type="button"
+        ></button>
+        <button
+          [disabled]="isSaving"
+          [label]="'Save'"
+          data-cy="entityCreateSaveButton"
+          style="margin-left: .5rem;"
+          icon="pi pi-save"
+          id="save-entity"
+          pButton
+          type="submit"
+        ></button>
+      </div>
+    </form>
+  </div>
+</div>

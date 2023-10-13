@@ -1,5 +1,5 @@
 import {Component, ElementRef, Input, Renderer2} from '@angular/core';
-import {SharedModule} from "app/shared/shared.module";
+import {SharedModule} from "../../shared/shared.module";
 
 @Component({
   selector: 'app-password-strength-bar',

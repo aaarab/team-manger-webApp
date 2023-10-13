@@ -1,0 +1,15 @@
+:host ::ng-deep .p-tabmenu-nav {
+  flex-direction: column;
+  border: 0px solid #dee2e6 !important;
+
+  .p-tabmenuitem {
+    margin-bottom: 3px !important;
+
+    .p-menuitem-link {
+      width: 100%;
+    }
+  }
+  .p-tabmenuitem.p-highlight {
+    border-left: 5px solid var(--kt-danger);
+  }
+}

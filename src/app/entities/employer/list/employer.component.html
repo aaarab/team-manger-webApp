@@ -1,21 +1,17 @@
 <div class="container">
   <h2 id="page-heading" data-cy="EmployerHeading">
     <span>Employers</span>
-    <div class="d-flex justify-content-end">
-      <button class="btn btn-info me-2" (click)="loadAll()" [disabled]="loading">
-        <span>Refresh list</span>
-      </button>
-
-      <button
-        id="app-create-entity"
-        data-cy="entityCreateButton"
-        class="btn btn-primary"
-        [routerLink]="['/employer/new']"
-      >
-        <span> Create a new Employer </span>
-      </button>
-    </div>
   </h2>
+  <div class="d-flex justify-content-end mb-3">
+    <p-button
+      id="create-entity"
+      [routerLink]="['/employer', 'new']"
+      label="Create a New Employer"
+      icon="pi pi-plus"
+      iconPos="left"
+      data-cy="entityCreateButton"
+    ></p-button>
+  </div>
   <div class="card">
     <p-table
       [value]="employers"
