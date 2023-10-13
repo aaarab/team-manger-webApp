@@ -1,3 +1,4 @@
+import {IRole} from "../../core/auth/account.model";
 
 export interface IUser {
   id: number;
@@ -9,5 +10,6 @@ export interface IUser {
   birthday?: Date | null;
   created_at?: Date | null;
   updated_at?: Date | null;
+  roles?: IRole[] | null;
 }
 
