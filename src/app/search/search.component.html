@@ -1,0 +1,29 @@
+<div class="container">
+  <div class="mt-4">
+    <div class="p-inputgroup">
+      <input #query [ngModel]="query.value" (ngModelChange)="onSearchQueryChanged(query.value)"  type="text" pInputText placeholder="Type Here to search" />
+      <span class="p-inputgroup-addon">
+      <i class="pi pi-search" style="font-size: 2rem"></i>
+    </span>
+    </div>
+    <div *ngIf="searchResult">
+      <h3 class="text-success">Accounts</h3>
+      <ul class="list-unstyled">
+        <ng-container *ngFor="let account of searchResult.accounts">
+          <li>
+            <a (click)="close()" [routerLink]="['/account', account.id, 'view']">{{ account.name }}</a>
+          </li>
+        </ng-container>
+      </ul>
+      <hr>
+      <h3 class="text-success">Employers</h3>
+      <ul class="list-unstyled">
+        <ng-container *ngFor="let employer of searchResult.employers">
+          <li>
+            <a (click)="close()" [routerLink]="['/employer', employer.id, 'view']">{{ employer.name }}</a>
+          </li>
+        </ng-container>
+      </ul>
+    </div>
+  </div>
+</div>

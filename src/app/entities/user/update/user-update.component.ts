@@ -34,7 +34,7 @@ export class UserUpdateComponent implements OnInit {
     } else {
       this.activatedRoute.data.subscribe(({ user }) => {
         this.updateForm(user);
-        this.editForm.controls.password.disabled;
+        this.editForm.controls.password.disable({ onlySelf: true, emitEvent: false });
       });
     }
   }
@@ -47,9 +47,6 @@ export class UserUpdateComponent implements OnInit {
     if (this.editForm.valid) {
       this.isSaving = true;
       const user = this.editForm.value;
-      if (!this.embedded) {
-        delete user.password;
-      }
       if (user.id) {
         this.subscribeToSaveResponse(this.userService.update(user as IUser));
       } else {
