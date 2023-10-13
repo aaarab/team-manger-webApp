@@ -4,6 +4,8 @@ import { IEmployer } from '../employer.model';
 import { EntityArrayResponseType, EmployerService } from '../service/employer.service';
 import {filter} from "rxjs";
 import {ConfirmationService, MessageService} from "primeng/api";
+import {DialogService} from "primeng/dynamicdialog";
+import {EventLogsComponent} from "../../../components/event-logs/event-logs.component";
 
 @Component({
   selector: 'app-employer',
@@ -20,6 +22,7 @@ export class EmployerComponent implements OnInit {
     protected router: Router,
     protected confirmationService: ConfirmationService,
     protected messageService: MessageService,
+    protected dialogService: DialogService,
   ) {}
 
   trackId = (_index: number, item: IEmployer): number => this.employerService.getEmployerIdentifier(item);
@@ -51,6 +54,14 @@ export class EmployerComponent implements OnInit {
     ).subscribe(res => {
       this.onResponseSuccess(res);
     })
+  }
+
+  openHistoryDialog(id: number): void {
+    const data = { objectType: 'employers', objectId: id };
+    this.dialogService.open(EventLogsComponent, {
+      header: 'Employer History',
+      data
+    });
   }
 
   protected onResponseSuccess(response: EntityArrayResponseType): void {

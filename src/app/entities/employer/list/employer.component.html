@@ -66,6 +66,13 @@
               data-cy="entityDeleteButton"
             >
             </p-button>
+            <p-button
+              type="submit"
+              (click)="openHistoryDialog(employer.id)"
+              icon="pi pi-book"
+              styleClass="p-button-warning"
+            >
+            </p-button>
           </td>
         </tr>
       </ng-template>

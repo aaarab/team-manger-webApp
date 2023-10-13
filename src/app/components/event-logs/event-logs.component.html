@@ -1,0 +1,28 @@
+<div *ngIf="loading; else elseBlock">
+  <p-progressSpinner styleClass="w-4rem h-4rem" strokeWidth="8" fill="var(--surface-ground)" animationDuration=".5s"></p-progressSpinner>
+</div>
+<ng-template #elseBlock>
+  <ng-container *ngFor="let eventLog of eventLogs">
+    <ul class="list-unstyled">
+      <li>
+        {{ eventLog.created_at | date: 'dd-mm-yyyy hh:mm' }}
+        <ng-container [ngSwitch]="eventLog.attributes.status">
+          <ng-container *ngSwitchCase="'draft'">
+            {{ (eventLog.creator?.roles! | includes: 'name' : 'admin') ? 'Admin' : null }}
+            &quot;{{ eventLog.creator?.name }}&quot;
+            a invite l&#39;employé &quot;{{ eventLog.attributes.name }}&quot; à joindre la société &quot;{{ eventLog.account?.name }}&quot;
+          </ng-container>
+          <ng-container *ngSwitchCase="'valid'">
+            &quot;{{ eventLog.creator?.name }}&quot; à valider l’invitation
+          </ng-container>
+          <ng-container *ngSwitchCase="'cancelled'">
+            &quot;{{ eventLog.creator?.name }}&quot; Annulation d’invitation
+          </ng-container>
+          <ng-container *ngSwitchCase="'confirmed'">
+            &quot;{{ eventLog.creator?.name }}&quot; à confirmer son profile
+          </ng-container>
+        </ng-container>
+      </li>
+    </ul>
+  </ng-container>
+</ng-template>
