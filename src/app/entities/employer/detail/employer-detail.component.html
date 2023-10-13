@@ -1,0 +1,37 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="employer">
+      <h2 data-cy="employerDetailsHeading"><span>Employer</span></h2>
+
+      <hr />
+      <dl class="row-md app-entity-details">
+        <dt><span>ID</span></dt>
+        <dd>
+          <span>{{ employer.id }}</span>
+        </dd>
+        <dt><span>Name</span></dt>
+        <dd>
+          <span>{{ employer.name }}</span>
+        </dd>
+        <dt><span>Email</span></dt>
+        <dd>
+          <span>{{ employer.email }}</span>
+        </dd>
+        <dt><span>Account Id</span></dt>
+        <dd>
+          <span>{{ employer.account_id }}</span>
+        </dd>
+        <dt><span>Status</span></dt>
+        <dd>
+          <span>{{ employer.status }}</span>
+        </dd>
+      </dl>
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        back
+      </button>
+      <button type="button" [routerLink]="['/employer', employer.id, 'edit']" class="btn btn-primary">
+        Edit
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,140 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="employer-heading" data-cy="EmployerCreateUpdateHeading">
+        <ng-container *ngIf="editForm.value.id">Edit a Employer</ng-container>
+        <ng-container *ngIf="!editForm.value.id">Create a New Employer</ng-container>
+      </h2>
+      <div class="p-fluid">
+        <div class="mb-3">
+          <label class="form-label" for="field_name" class="label-asterisk">Name</label>
+          <input pInputText type="text" name="name" id="field_name" data-cy="name" formControlName="name" />
+          <div class="validation-messages">
+            <ng-container
+              *ngIf="editForm.controls.name.errors && (editForm.controls.name.dirty || editForm.controls.name.touched)">
+              <p-message
+                *ngIf="editForm.controls.name.errors.required"
+                text="This field is required"
+                severity="error"
+              >
+              </p-message>
+            </ng-container>
+          </div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="field_email" class="label-asterisk">Email</label>
+          <input pInputText type="text" name="email" id="field_email" data-cy="email" formControlName="email" />
+          <div class="validation-messages">
+            <ng-container
+              *ngIf="editForm.controls.email.errors && (editForm.controls.email.dirty || editForm.controls.email.touched)">
+              <p-message
+                *ngIf="editForm.controls.email.errors.required"
+                text="This field is required"
+                severity="error"
+              >
+              </p-message>
+              <p-message
+                *ngIf="editForm.controls.email.errors.email"
+                text="This field should be a valid email."
+                severity="error"
+              >
+              </p-message>
+            </ng-container>
+          </div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="field_account_id" class="label-asterisk">Account Id</label>
+          <p-dropdown
+            [filter]="true"
+            [options]="accountOptions"
+            data-cy="account_id"
+            formControlName="account_id"
+            id="field_account_id"
+            optionLabel="name"
+            optionValue="id"
+            placeholder="Choose"
+          ></p-dropdown>
+          <ng-container
+            *ngIf="editForm.controls.account_id.errors && (editForm.controls.account_id.dirty || editForm.controls.account_id.touched)">
+            <p-message
+              *ngIf="editForm.controls.account_id.errors.required"
+              text="This field is required"
+              severity="error"
+            >
+            </p-message>
+          </ng-container>
+        </div>
+        <div *ngIf="editForm.value.id" class="mb-3">
+          <label class="form-label" for="field_status" class="label-asterisk">Status</label>
+          <p-dropdown
+            [filter]="true"
+            [options]="employerStatusOptions"
+            data-cy="status"
+            formControlName="status"
+            id="field_status"
+            optionLabel="label"
+            optionValue="value"
+            placeholder="Choose"
+          ></p-dropdown>
+          <ng-container
+            *ngIf="editForm.controls.status.errors && (editForm.controls.status.dirty || editForm.controls.status.touched)">
+            <p-message
+              *ngIf="editForm.controls.status.errors.required"
+              text="This field is required"
+              severity="error"
+            >
+            </p-message>
+          </ng-container>
+        </div>
+
+      </div>
+
+      <div>
+        <button
+          (click)="previousState()"
+          [label]="'Cancel'"
+          class="p-button-secondary"
+          data-cy="entityCreateCancelButton"
+          icon="pi pi-ban"
+          id="cancel-save"
+          pButton
+          type="button"
+        ></button>
+        <button
+          *ngIf="editForm.value.id"
+          [routerLink]="['/item', editForm.value.id, 'view']"
+          [disabled]="isSaving"
+          [label]="'view'"
+          data-cy="entityViewButton"
+          class="p-button-success mx-1"
+          icon="pi pi-eye"
+          id="view-entity"
+          pButton
+          type="button"
+        ></button>
+        <button
+          [disabled]="isSaving"
+          [label]="'Save'"
+          data-cy="entityCreateSaveButton"
+          icon="pi pi-save"
+          id="save-entity"
+          pButton
+          type="submit"
+        ></button>
+<!--        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">-->
+<!--          <span>Cancel</span>-->
+<!--        </button>-->
+<!--        <button-->
+<!--          type="submit"-->
+<!--          id="save-entity"-->
+<!--          data-cy="entityCreateSaveButton"-->
+<!--          [disabled]="isSaving"-->
+<!--          class="btn btn-primary"-->
+<!--          style="margin-left: .5rem"-->
+<!--        >-->
+<!--          &nbsp;<span>Save</span>-->
+<!--        </button>-->
+      </div>
+    </form>
+  </div>
+</div>
