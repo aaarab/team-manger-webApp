@@ -1,0 +1,84 @@
+<div class="container">
+  <div class="row">
+    <div class="p-5">
+      <!--begin::Form-->
+      <form class="form w-100" [formGroup]="loginForm" (submit)="login()">
+        <div class="text-center mb-11">
+          <h1 class="text-dark fw-bolder mb-3">Sign In</h1>
+        </div>
+        <!--end::Separator-->
+        <!--begin::Input group=-->
+        <div class="fv-row mb-4 p-fluid">
+          <!--begin::Email-->
+          <input
+            pInputText
+            #email
+            type="text"
+            placeholder="demo@email.com"
+            name="email"
+            formControlName="email"
+            data-cy="email"
+            autocomplete="off"
+            class="form-control bg-transparent"
+          />
+          <ng-container *ngIf="loginForm.controls.email.errors && (loginForm.controls.email.dirty || loginForm.controls.email.touched)">
+            <p-message
+              [hidden]="!loginForm.controls.email.errors.required"
+              text="This field is required."
+              severity="error"
+            >
+            </p-message>
+            <p-message
+              [hidden]="!loginForm.controls.email.errors.email"
+              text="This field should be a valid email."
+              severity="error"
+            >
+            </p-message>
+          </ng-container>
+          <!--end::Email-->
+        </div>
+        <!--end::Input group=-->
+        <div class="fv-row mb-3 p-fluid">
+          <!--begin::Password-->
+          <input
+            pInputText
+            type="password"
+            placeholder="Enter your password"
+            data-cy="password"
+            name="password"
+            formControlName="password"
+            autocomplete="off"
+            class="form-control bg-transparent"
+          />
+          <ng-container *ngIf="loginForm.controls.password.errors && (loginForm.controls.password.dirty || loginForm.controls.password.touched)">
+            <p-message
+              [hidden]="!loginForm.controls.password.errors.required"
+              text="This field is required."
+              severity="error"
+            >
+            </p-message>
+          </ng-container>
+          <!--end::Password-->
+        </div>
+        <!--end::Input group=-->
+        <!--begin::Wrapper-->
+        <div class="d-flex flex-stack flex-wrap gap-3 fs-base fw-semibold mb-8">
+          <div>
+            <!--        <span appTranslate="global.form.rememberMe"></span>-->
+            <p-inputSwitch formControlName="rememberMe" name="rememberMe"></p-inputSwitch>
+          </div>
+          <!--end::Link-->
+        </div>
+        <!--end::Wrapper-->
+        <!--begin::Submit button-->
+        <div class="mb-10">
+          <button pButton data-cy="loginButtonSelector" type="submit" label="Login" [loading]="isSaving"></button>
+        </div>
+        <!--end::Submit button-->
+      </form>
+      <!--end::Form-->
+    </div>
+    <!--end::Wrapper-->
+  </div>
+  <!--begin::Wrapper-->
+</div>

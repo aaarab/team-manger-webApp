@@ -7,6 +7,10 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {HttpClientModule} from "@angular/common/http";
 import {SharedModule} from "./shared/shared.module";
 import {ErrorComponent} from "./layouts/error/error.component";
+import {ApplicationConfigService} from "./core/config/application-config.service";
+import {environment} from "../environments/environment";
+import {NgxWebstorageModule} from "ngx-webstorage";
+import {httpInterceptorProviders} from "./core/interceptor";
 
 @NgModule({
   imports: [
@@ -16,9 +20,18 @@ import {ErrorComponent} from "./layouts/error/error.component";
     AppRoutingModule,
     SharedModule,
     LayoutModule,
+    NgxWebstorageModule.forRoot({
+      prefix: 'app',
+      separator: '-',
+      caseSensitive: true,
+    }),
   ],
-  providers: [],
+  providers: [httpInterceptorProviders],
   declarations: [ErrorComponent],
   bootstrap: [LayoutComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor(applicationConfigService: ApplicationConfigService) {
+    applicationConfigService.setEndpointPrefix(environment.serverApiUrl);
+  }
+}
