@@ -10,7 +10,7 @@
           <ng-container *ngSwitchCase="'draft'">
             {{ (eventLog.creator?.roles! | arrayObjectHasKeyValue: 'name' : 'admin') ? 'Admin' : null }}
             &quot;{{ eventLog.creator?.name }}&quot;
-            a invite l&#39;employé &quot;{{ eventLog.attributes.name }}&quot; à joindre la société &quot;{{ eventLog.account?.name }}&quot;
+            a invite l&#39;employé &quot;{{ eventLog.attributes.name }}&quot; à joindre la société &quot;{{ eventLog.attributes.account_id | findByKey: accounts : 'id' : 'name' }}&quot;
           </ng-container>
           <ng-container *ngSwitchCase="'valid'">
             &quot;{{ eventLog.creator?.name }}&quot; à valider l’invitation
