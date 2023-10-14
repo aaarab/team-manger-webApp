@@ -14,7 +14,8 @@ export class EmployerRoutingResolveService implements Resolve<IEmployer | null> 
   resolve(route: ActivatedRouteSnapshot): Observable<IEmployer | null | never> {
     const id = route.params['id'];
     if (id) {
-      return this.service.find(id).pipe(
+      const serverQuery = { with: 'account' };
+      return this.service.find(id, serverQuery).pipe(
         mergeMap((employer: HttpResponse<IEmployer>) => {
           if (employer.body) {
             return of(employer.body);

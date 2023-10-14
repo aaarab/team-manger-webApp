@@ -1,14 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+import {filter, Observable} from 'rxjs';
 import { finalize } from 'rxjs/operators';
 
 import { EmployerFormService, EmployerFormGroup } from './employer-form.service';
 import {IEmployer, NewEmployer} from '../employer.model';
 import { EmployerService } from '../service/employer.service';
-import {EmployerStatus} from "../../enumerations/employer-status.model";
+import {EMPLOYER_ALLOWED_STATUS, EmployerStatus} from "../../enumerations/employer-status.model";
 import {MessageService} from "primeng/api";
+import {IAccount} from "../../account/account.model";
+import {AccountService} from "../../account/service/account.service";
+import * as Console from "console";
 
 @Component({
   selector: 'app-employer-update',
@@ -16,10 +19,8 @@ import {MessageService} from "primeng/api";
 })
 export class EmployerUpdateComponent implements OnInit {
   isSaving = false;
-  employerStatusOptions = Object.entries(EmployerStatus).map(([k]) => ({ label: k, value: k }));
-  accountOptions: any;
-  // TODO to fix in account branch.
-  // accountOptions!: IAccount[];
+  employerStatusOptions!: { label: EmployerStatus, value: EmployerStatus }[];
+  accountOptions!: IAccount[];
 
   editForm: EmployerFormGroup = this.employerFormService.createEmployerFormGroup();
 
@@ -28,6 +29,7 @@ export class EmployerUpdateComponent implements OnInit {
     protected employerFormService: EmployerFormService,
     protected activatedRoute: ActivatedRoute,
     protected messageService: MessageService,
+    protected accountService: AccountService,
   ) {}
 
   ngOnInit(): void {
@@ -38,6 +40,7 @@ export class EmployerUpdateComponent implements OnInit {
     });
 
     this.loadAllAccounts();
+    this.refreshEmployerStatusOptions();
   }
 
   previousState(): void {
@@ -59,8 +62,11 @@ export class EmployerUpdateComponent implements OnInit {
   }
 
   loadAllAccounts(): void {
-    // TODO make account service query.
-    // Account branch.
+    this.accountService.query()
+      .pipe(filter(res => res.ok))
+      .subscribe(res => {
+        this.accountOptions = res.body!;
+      });
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IEmployer>>): void {
@@ -101,5 +107,14 @@ export class EmployerUpdateComponent implements OnInit {
     } else {
       this.employerFormService.resetForm(this.editForm, employer);
     }
+  }
+
+  private refreshEmployerStatusOptions(): void {
+    const status = EMPLOYER_ALLOWED_STATUS[this.editForm.value.status!] ?? [];
+    const allowedStatus = status.includes(this.editForm.value.status!)
+    ? EMPLOYER_ALLOWED_STATUS[this.editForm.value.status!]
+    : [...status, this.editForm.value.status];
+
+    this.employerStatusOptions = allowedStatus.map(status => ({ label: status!, value: status! }));
   }
 }

@@ -38,8 +38,12 @@
           <td>{{ user.id }}</td>
           <td>{{ user.name }}</td>
           <td>{{ user.email }}</td>
-          <td>{{ user.account_id }}</td>
-          <td>{{ user.roles }}</td>
+          <td>{{ user.account?.name }}</td>
+          <td>
+            <ng-container *ngFor="let role of user.roles">
+              {{ role.name }}
+            </ng-container>
+          </td>
           <td>{{ user.address }}</td>
           <td>{{ user.phone }}</td>
           <td>{{ user.birthday | date: 'medium' }}</td>
@@ -48,6 +52,7 @@
               [routerLink]="['/user', user.id, 'view']"
               icon="pi pi-eye"
               styleClass="p-button-success"
+              [style]="{ 'margin-right': '.5em' }"
               data-cy="entityViewButton"
             >
             </p-button>
@@ -55,6 +60,7 @@
               [routerLink]="['/user', user.id, 'edit']"
               icon="pi pi-pencil"
               styleClass="p-button-warning"
+              [style]="{ 'margin-right': '.5em' }"
               data-cy="entityEditButton"
             >
             </p-button>
