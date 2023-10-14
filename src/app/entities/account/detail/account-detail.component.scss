@@ -1,0 +1,43 @@
+table {
+  tbody {
+    tr {
+      td {
+        padding: 5px;
+        vertical-align: top;
+        font-family: 'Roboto',sans-serif!important;
+        font-weight: 400;
+        border-top: 1px solid #f4f5f8;
+      }
+      th {
+        padding: 5px;
+        vertical-align: top;
+        font-family: 'Roboto',sans-serif!important;
+        border-top: 1px solid #f4f5f8;
+      }
+    }
+  }
+}
+
+.label {
+  padding: 4px;
+  font-size: 90%;
+  border-radius: 3px;
+}
+.prospect {
+  background-color: #36a3f7;
+  color: #fff;
+}
+
+.supplier {
+  background-color: #ffb822;
+  color: #fff;
+}
+.customer {
+  background-color: #34bfa3;
+  color: #fff;
+}
+
+.partner {
+  background-color: #de0e4c;
+  color: #fff;
+}

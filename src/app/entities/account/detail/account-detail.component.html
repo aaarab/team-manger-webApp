@@ -1,0 +1,53 @@
+<div *ngIf="account" class="container">
+  <div class="d-flex justify-content-between">
+    <h2 data-cy="AccountDetailsHeading"><span>account</span></h2>
+    <div class="my-2">
+      <button
+        (click)="previousState()"
+        [label]="'back'"
+        class="p-button-info mx-1"
+        data-cy="entityDetailsBackButton"
+        icon="pi pi-arrow-left"
+        pButton
+        type="submit"
+      ></button>
+      <button
+        [label]="'edit'"
+        [routerLink]="['/account', account.id, 'edit']"
+        class="p-button-warning"
+        icon="pi pi-pencil"
+        pButton
+        type="button"
+      ></button>
+    </div>
+  </div>
+  <p-card styleClass="mt-2">
+    <ng-template pTemplate="header">
+      <div class="p-card-title" style="padding-top: 10px; padding-left: 1rem">
+        {{ account.name }}
+      </div>
+    </ng-template>
+    <div class="grid">
+      <div class="col-mm-8 col-sm-12">
+        <table>
+          <tbody>
+            <tr>
+              <th>Name</th>
+              <td>{{ account.name }}</td>
+            </tr>
+            <tr>
+              <th>Email</th>
+              <td>
+                {{ account.email }}
+              </td>
+            </tr>
+            <tr>
+              <th>Created At</th>
+              <td>{{ account.created_at | date: 'medium' }} </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </p-card>
+</div>

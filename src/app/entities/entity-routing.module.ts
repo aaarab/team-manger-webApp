@@ -5,6 +5,11 @@ import { RouterModule } from '@angular/router';
   imports: [
     RouterModule.forChild([
       {
+        path: 'account',
+        data: { pageTitle: 'Accounts' },
+        loadChildren: () => import('./account/account.module').then(m => m.AccountModule),
+      },
+      {
         path: 'employer',
         data: { pageTitle: 'Employers' },
         loadChildren: () => import('./employer/employer.module').then(m => m.EmployerModule),
@@ -13,12 +18,7 @@ import { RouterModule } from '@angular/router';
         path: 'user',
         data: { pageTitle: 'Users' },
         loadChildren: () => import('./user/user.module').then(m => m.UserModule),
-      }
-      // {
-      //   path: 'account',
-      //   data: { pageTitle: 'Accounts' },
-      //   loadChildren: () => import('./account/accounte.module').then(m => m.AccounteModule),
-      // },
+      },
     ]),
   ],
 })
