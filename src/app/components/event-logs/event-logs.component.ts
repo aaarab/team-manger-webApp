@@ -5,11 +5,12 @@ import {filter} from "rxjs";
 import {ProgressSpinnerModule} from "primeng/progressspinner";
 import {DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
 import {IncludesPipe} from "../../shared/pipes/array/includes.pipe";
+import {ArrayObjectHasKeyValuePipe} from "../../shared/pipes/array/array-object-has-key-value.pipe";
 
 @Component({
   selector: 'app-event-logs',
   standalone: true,
-  imports: [SharedModule, ProgressSpinnerModule, IncludesPipe],
+    imports: [SharedModule, ProgressSpinnerModule, IncludesPipe, ArrayObjectHasKeyValuePipe],
   templateUrl: './event-logs.component.html',
   styleUrls: ['./event-logs.component.scss']
 })

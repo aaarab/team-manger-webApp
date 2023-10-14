@@ -8,7 +8,7 @@
         {{ eventLog.created_at | date: 'dd-mm-yyyy hh:mm' }}
         <ng-container [ngSwitch]="eventLog.attributes.status">
           <ng-container *ngSwitchCase="'draft'">
-            {{ (eventLog.creator?.roles! | includes: 'name' : 'admin') ? 'Admin' : null }}
+            {{ (eventLog.creator?.roles! | arrayObjectHasKeyValue: 'name' : 'admin') ? 'Admin' : null }}
             &quot;{{ eventLog.creator?.name }}&quot;
             a invite l&#39;employé &quot;{{ eventLog.attributes.name }}&quot; à joindre la société &quot;{{ eventLog.account?.name }}&quot;
           </ng-container>

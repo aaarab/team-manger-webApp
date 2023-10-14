@@ -6,8 +6,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class IncludesPipe implements PipeTransform {
 
-  transform<T>(values: T[], key: keyof T, value: any ): boolean {
-    return values.some(el => el[key] === value);
+  transform(values: (string | number)[], value: any ): boolean {
+    return values.includes(value);
   }
 
 }
