@@ -29,8 +29,9 @@ export class EmployerService {
     return this.http.patch<IEmployer>(`${this.resourceUrl}/${this.getEmployerIdentifier(employer)}`, employer, { observe: 'response' });
   }
 
-  find(id: number): Observable<EntityResponseType> {
-    return this.http.get<IEmployer>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  find(id: number, req?: any): Observable<EntityResponseType> {
+    const options = createRequestOption(req);
+    return this.http.get<IEmployer>(`${this.resourceUrl}/${id}`, { params: options, observe: 'response' });
   }
 
   query(req?: any): Observable<EntityArrayResponseType> {

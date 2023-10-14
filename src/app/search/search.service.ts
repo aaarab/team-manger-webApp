@@ -4,11 +4,10 @@ import {Observable} from "rxjs";
 import {createRequestOption} from "../core/request/request-util";
 import {HttpClient, HttpResponse} from "@angular/common/http";
 import {IEmployer} from "../entities/employer/employer.model";
+import {IAccount} from "../entities/account/account.model";
 
-// TODO Fix after create account entity.
 export interface ISearchResult {
-  // accounts: IAccount[],
-  accounts: any[]
+  accounts: IAccount[],
   employers: IEmployer[],
 }
 

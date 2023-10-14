@@ -33,7 +33,8 @@ export class UserComponent implements OnInit {
 
 
   loadAll(): void {
-    this.userService.query()
+    const serverQuery = { with: 'roles,account' };
+    this.userService.query(serverQuery)
       .pipe(filter((res) => res.ok))
       .subscribe(res => {
         this.onResponseSuccess(res);

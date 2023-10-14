@@ -56,6 +56,12 @@
             <ng-container
               *ngIf="editForm.controls.password.errors && (editForm.controls.password.dirty || editForm.controls.password.touched)">
               <p-message
+                *ngIf="editForm.controls.password.errors.required"
+                text="This field is required"
+                severity="error"
+              >
+              </p-message>
+              <p-message
                 *ngIf="editForm.controls.password.errors.maxLength"
                 [text]="'This field cannot be longer than '+ 60 +' characters.'"
                 severity="error"

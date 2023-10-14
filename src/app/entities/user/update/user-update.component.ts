@@ -7,6 +7,7 @@ import { UserFormService, UserFormGroup } from './user-form.service';
 import { IUser } from '../user.model';
 import { UserService } from '../service/user.service';
 import {MessageService} from "primeng/api";
+import {Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-user-update',
@@ -31,6 +32,8 @@ export class UserUpdateComponent implements OnInit {
     if (this.user) {
       this.embedded = true;
       this.updateForm(this.user);
+      this.editForm.controls.password.addValidators(Validators.required);
+
     } else {
       this.activatedRoute.data.subscribe(({ user }) => {
         this.updateForm(user);
@@ -50,7 +53,9 @@ export class UserUpdateComponent implements OnInit {
       if (user.id) {
         this.subscribeToSaveResponse(this.userService.update(user as IUser));
       } else {
-        this.subscribeToSaveResponse(this.userService.create(user as IUser));
+        // since we always create admin users only.
+        const copy = { ...user, roles: 'admin' } as unknown;
+        this.subscribeToSaveResponse(this.userService.create(copy as IUser));
       }
     } else {
       this.editForm.markAllAsTouched();

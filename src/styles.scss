@@ -3,34 +3,4 @@
 @import "primeng/resources/primeng.css";
 @import "primeicons/primeicons.css";
 @import "~bootstrap/dist/css/bootstrap.css";
-
-.label-asterisk::after {
-  content: '*';
-  color: red;
-  margin: 0 0.5rem;
-}
-
-.label  {
-  display: inline;
-  line-height: 1;
-  color: #fff;
-  text-align: center;
-  white-space: nowrap;
-  vertical-align: baseline;
-  border-radius: .25em;
-  padding: 3px;
-}
-
-.draft {
-  background-color: #adafc6;
-}
-
-.valid {
-  background-color: #34bfa3;
-}
-
-
-.cancelled {
-  background-color: #f4516c;
-}
-
+@import "global";

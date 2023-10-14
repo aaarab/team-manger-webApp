@@ -1,37 +1,69 @@
-<div class="d-flex justify-content-center">
-  <div class="col-8">
-    <div *ngIf="employer">
-      <h2 data-cy="employerDetailsHeading"><span>Employer</span></h2>
-
-      <hr />
-      <dl class="row-md app-entity-details">
-        <dt><span>ID</span></dt>
-        <dd>
-          <span>{{ employer.id }}</span>
-        </dd>
-        <dt><span>Name</span></dt>
-        <dd>
-          <span>{{ employer.name }}</span>
-        </dd>
-        <dt><span>Email</span></dt>
-        <dd>
-          <span>{{ employer.email }}</span>
-        </dd>
-        <dt><span>Account Id</span></dt>
-        <dd>
-          <span>{{ employer.account_id }}</span>
-        </dd>
-        <dt><span>Status</span></dt>
-        <dd>
-          <span>{{ employer.status }}</span>
-        </dd>
-      </dl>
-      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-        back
-      </button>
-      <button type="button" [routerLink]="['/employer', employer.id, 'edit']" class="btn btn-primary">
-        Edit
-      </button>
+<div *ngIf="employer" class="container">
+  <div class="d-flex justify-content-between">
+    <h2 data-cy="EmployerDetailsHeading"><span>Employer</span></h2>
+    <div class="my-2">
+      <button
+        (click)="previousState()"
+        [label]="'back'"
+        class="p-button-info mx-1"
+        data-cy="entityDetailsBackButton"
+        icon="pi pi-arrow-left"
+        pButton
+        type="submit"
+      ></button>
+      <button
+        [label]="'edit'"
+        [routerLink]="['/employer', employer.id, 'edit']"
+        class="p-button-warning"
+        icon="pi pi-pencil"
+        pButton
+        type="button"
+      ></button>
     </div>
   </div>
+  <p-card styleClass="mt-2">
+    <ng-template pTemplate="header">
+      <div class="p-card-title" style="padding-top: 10px; padding-left: 1rem">
+        {{ employer.name }}
+      </div>
+    </ng-template>
+    <div class="grid">
+      <div class="col-mm-8 col-sm-12">
+        <table>
+          <tbody>
+          <tr>
+            <th>Name</th>
+            <td>{{ employer.name }}</td>
+          </tr>
+          <tr>
+            <th>Email</th>
+            <td>
+              {{ employer.email }}
+            </td>
+          </tr>
+          <tr>
+            <th>Account</th>
+            <td>
+              <a [routerLink]="['/account', employer.account_id, 'view']">
+                {{ employer.account?.name }}
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <th>Status</th>
+            <td>
+              <span class="label" [class]="employer.status">
+                {{ employer.status }}
+              </span>
+            </td>
+          </tr>
+          <tr>
+            <th>Created At</th>
+            <td>{{ employer.created_at | date: 'medium' }} </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </p-card>
 </div>

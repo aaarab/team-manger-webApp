@@ -4,11 +4,11 @@ import { ActivatedRoute } from '@angular/router';
 import { IEmployer } from '../employer.model';
 
 @Component({
-  selector: 'jhi-employer-detail',
+  selector: 'app-employer-detail',
   templateUrl: './employer-detail.component.html',
 })
 export class EmployerDetailComponent implements OnInit {
-  employer: IEmployer | null = null;
+  employer!: IEmployer;
 
   constructor(protected activatedRoute: ActivatedRoute) {}
 

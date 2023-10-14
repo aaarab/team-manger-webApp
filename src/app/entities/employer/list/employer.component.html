@@ -62,7 +62,8 @@
               type="submit"
               (click)="delete(employer.id)"
               icon="pi pi-trash"
-              styleClass="p-button-danger"
+              styleClass="p-button-danger mt-2"
+              [style]="{ 'margin-right': '.5em' }"
               data-cy="entityDeleteButton"
             >
             </p-button>
@@ -70,7 +71,7 @@
               type="submit"
               (click)="openHistoryDialog(employer.id)"
               icon="pi pi-book"
-              styleClass="p-button-warning"
+              styleClass="p-button-info mt-2"
             >
             </p-button>
           </td>
