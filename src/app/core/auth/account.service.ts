@@ -3,9 +3,10 @@ import {catchError, map, Observable, of, ReplaySubject, shareReplay, tap} from "
 import {SessionStorageService} from "ngx-webstorage";
 import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
-import {Account} from "./account.model";
+import { Account } from "./account.model";
 import {StateStorageService} from "./state-storage.service";
 import {ApplicationConfigService} from "../config/application-config.service";
+import { AuthorityUserRoles } from "../../entities/enumerations/authority-type.model";
 
 @Injectable({
   providedIn: 'root'
@@ -28,14 +29,46 @@ export class AccountService {
     this.authenticationState.next(this.userIdentity);
   }
 
-  hasAnyAuthority(authorities: string[] | string): boolean {
+  hasAnyAuthority(authorities: { roles?: string[] | string, permissions?: string[] | string }): boolean {
     if (!this.userIdentity) {
       return false;
     }
-    if (!Array.isArray(authorities)) {
-      authorities = [authorities];
+
+    if (this.userIdentity.roles?.some(role => role.name === AuthorityUserRoles.admin)) {
+      return true;
     }
-    return this.userIdentity.permissions!.some((authority: string) => authorities.includes(authority));
+
+    if (!Array.isArray(authorities.roles)) {
+      authorities.roles = authorities.roles ? [authorities.roles] : [];
+    }
+
+    if (!Array.isArray(authorities.permissions) ) {
+      authorities.permissions = authorities.permissions ? [authorities.permissions] : [];
+    }
+
+    // No Permissions or Roles are provided.
+    if (authorities.permissions?.length === 0 && authorities.roles?.length === 0) {
+      return true;
+    }
+
+    // check if user has roles.
+    if (authorities.roles?.length && authorities.permissions.length === 0) {
+      return this.userIdentity.roles!.some(role => authorities.roles?.includes(role.name));
+    }
+
+    // check if user has permissions.
+    if (!authorities.permissions.length && authorities.roles.length === 0) {
+      return this.userIdentity.permissions!.some((permission: string) => authorities.permissions!.includes(permission));
+    }
+
+    // check if user has Role and Permission.
+    return this.userIdentity.permissions!.some(
+        (permission: string) => authorities.permissions!.includes(permission)
+      )
+      && this.userIdentity.roles!.some(
+        role => authorities.roles!.includes(role.name)
+      );
+
   }
 
   identity(force?: boolean): Observable<Account | null> {

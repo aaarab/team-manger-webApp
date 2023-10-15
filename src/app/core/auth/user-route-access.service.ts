@@ -18,10 +18,20 @@ export class UserRouteAccessService implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
     return this.accountService.identity().pipe(
       map((account) => {
+        const authorities = route.data['authorities'];
+
         if (account) {
-          // TODO check user authorities,
-          return true;
+          if (
+            !authorities
+            || this.accountService.hasAnyAuthority(authorities)
+          ) {
+            return true;
+          }
+
+          this.router.navigate(['/accessdenied']);
+          return false;
         }
+
         this.stateStorageService.storeUrl(state.url);
         this.router.navigate(['/auth/login']);
         return false;
