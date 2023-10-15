@@ -57,13 +57,13 @@ export class AccountService {
     }
 
     // check if user has permissions.
-    if (!authorities.permissions.length && authorities.roles.length === 0) {
-      return this.userIdentity.permissions!.some((permission: string) => authorities.permissions!.includes(permission));
+    if (authorities.permissions.length && authorities.roles.length === 0) {
+      return this.userIdentity.permissions!.some((permission) => authorities.permissions!.includes(permission.name));
     }
 
     // check if user has Role and Permission.
     return this.userIdentity.permissions!.some(
-        (permission: string) => authorities.permissions!.includes(permission)
+        (permission) => authorities.permissions!.includes(permission.name)
       )
       && this.userIdentity.roles!.some(
         role => authorities.roles!.includes(role.name)

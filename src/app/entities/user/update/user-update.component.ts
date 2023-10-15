@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import { HttpResponse } from '@angular/common/http';
+import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
@@ -8,6 +8,7 @@ import { IUser } from '../user.model';
 import { UserService } from '../service/user.service';
 import {MessageService} from "primeng/api";
 import {Validators} from "@angular/forms";
+import {AccountService} from "../../../core/auth/account.service";
 
 @Component({
   selector: 'app-user-update',
@@ -15,7 +16,6 @@ import {Validators} from "@angular/forms";
 })
 export class UserUpdateComponent implements OnInit {
   isSaving = false;
-  embedded!: boolean;
   editForm: UserFormGroup = this.userFormService.createUserFormGroup();
 
   @Input()
@@ -26,11 +26,11 @@ export class UserUpdateComponent implements OnInit {
     protected userFormService: UserFormService,
     protected activatedRoute: ActivatedRoute,
     protected messageService: MessageService,
+    protected accountService: AccountService,
   ) {}
 
   ngOnInit(): void {
     if (this.user) {
-      this.embedded = true;
       this.updateForm(this.user);
       this.editForm.controls.password.addValidators(Validators.required);
 
@@ -42,6 +42,10 @@ export class UserUpdateComponent implements OnInit {
     }
   }
 
+  get embedded(): boolean {
+    return !!this.user;
+  }
+
   previousState(): void {
     window.history.back();
   }
@@ -51,7 +55,10 @@ export class UserUpdateComponent implements OnInit {
       this.isSaving = true;
       const user = this.editForm.value;
       if (user.id) {
-        this.subscribeToSaveResponse(this.userService.update(user as IUser));
+        this.embedded
+          ? this.subscribeToSaveResponse(this.userService.updateProfile(user as IUser))
+          : this.subscribeToSaveResponse(this.userService.update(user as IUser))
+        ;
       } else {
         // since we always create admin users only.
         const copy = { ...user, roles: 'admin' } as unknown;
@@ -65,14 +72,19 @@ export class UserUpdateComponent implements OnInit {
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IUser>>): void {
     result.pipe(finalize(() => this.onSaveFinalize())).subscribe({
       next: (res) => this.onSaveSuccess(res.body!),
-      error: () => this.onSaveError(),
+      error: (error: HttpErrorResponse) => this.onSaveError(error.message),
     });
   }
 
   protected onSaveSuccess(res: IUser): void {
-    const summary =  this.editForm.value.id
-      ? `A User is updated with identifier ${res.id}`
-      : `A new User is created with identifier ${res.id}`
+    let summary: string;
+
+    if (this.editForm.value.id) {
+      summary = this.embedded ? 'Profile Updated' : `A User is updated with identifier ${res.id}`;
+      this.refreshAuthenticatedUser();
+    } else {
+      summary = `A new User is created with identifier ${res.id}`
+    }
 
     this.messageService.add({
       severity: 'success',
@@ -82,8 +94,11 @@ export class UserUpdateComponent implements OnInit {
     this.previousState();
   }
 
-  protected onSaveError(): void {
-    // Api for inheritance.
+  protected onSaveError(error: string): void {
+    this.messageService.add({
+      severity: 'error',
+      summary: error,
+    });
   }
 
   protected onSaveFinalize(): void {
@@ -92,5 +107,9 @@ export class UserUpdateComponent implements OnInit {
 
   protected updateForm(user: IUser): void {
     this.userFormService.resetForm(this.editForm, user, { onlySelf: true, emitEvent: false });
+  }
+
+  protected refreshAuthenticatedUser(): void {
+    this.accountService.identity(true).subscribe();
   }
 }

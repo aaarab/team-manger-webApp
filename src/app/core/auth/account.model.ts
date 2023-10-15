@@ -7,6 +7,8 @@ export interface IRole {
   updated_at?: Date | null;
 }
 
+export interface IPermission extends IRole {}
+
 export class Account {
   constructor(
     public id: number,
@@ -21,6 +23,6 @@ export class Account {
     public updated_by?: number | null,
     public updated_at?: Date | null,
     public roles?: IRole[],
-    public permissions?: string[],
+    public permissions?: IPermission[],
   ) {}
 }

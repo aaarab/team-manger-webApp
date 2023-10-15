@@ -64,8 +64,9 @@ export class UserService {
     return this.http.delete(`${this.applicationConfigService.getEndpointFor('user')}/${id}`, { observe: 'response' });
   }
 
-  updateProfile(user: IUser, id: number): Observable<HttpResponse<IUser>> {
-    return this.http.put<IUser>(`${this.applicationConfigService.getEndpointFor('user/update-profile')}/${id}`, user, { observe: 'response'} );
+  updateProfile(user: IUser): Observable<HttpResponse<IUser>> {
+    const copy = this.convertDateFromClient(user);
+    return this.http.put<IUser>(`${this.applicationConfigService.getEndpointFor('user-profile')}`, copy, { observe: 'response'} );
   }
 
   getUserIdentifier(user: Pick<IUser, 'id'>): number {

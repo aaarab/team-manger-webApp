@@ -3,14 +3,16 @@
     <span>Employers</span>
   </h2>
   <div class="d-flex justify-content-end mb-3">
-    <p-button
-      id="create-entity"
-      [routerLink]="['/employer', 'new']"
-      label="Create a New Employer"
-      icon="pi pi-plus"
-      iconPos="left"
-      data-cy="entityCreateButton"
-    ></p-button>
+    <app-acl [authorities]="{ roles: 'admin' }" >
+      <p-button
+        id="create-entity"
+        [routerLink]="['/employer', 'new']"
+        label="Create a New Employer"
+        icon="pi pi-plus"
+        iconPos="left"
+        data-cy="entityCreateButton"
+      ></p-button>
+    </app-acl>
   </div>
   <div class="card">
     <p-table
