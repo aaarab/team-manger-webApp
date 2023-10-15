@@ -38,8 +38,8 @@ export class EventLogsComponent implements OnInit {
 
   loadAll(): void {
     const serverQuery = {
-      object_type: this.dynamicDialogConfig.data.objectType,
-      object_id: this.dynamicDialogConfig.data.objectId,
+      object_type: this.dynamicDialogConfig.data?.objectType,
+      object_id: this.dynamicDialogConfig.data?.objectId,
     };
     this.eventLogService.query(serverQuery)
       .pipe(filter(res => res.ok))

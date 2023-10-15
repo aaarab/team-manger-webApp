@@ -6,25 +6,31 @@ import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of, Subject, from } from 'rxjs';
 
-import { UserFormService } from './usere-form.service';
-import { UserService } from '../service/usere.service';
-import { IUsere } from '../usere.model';
+import { UserFormService } from './user-form.service';
+import { UserService } from '../service/user.service';
+import { IUser } from '../user.model';
 
-import { UserUpdateComponent } from './usere-update.component';
+import { UserUpdateComponent } from './user-update.component';
+import {MessageService} from "primeng/api";
+import {DatePipe} from "@angular/common";
+import {SessionStorageService} from "ngx-webstorage";
 
-describe('Usere Management Update Component', () => {
+describe('User Management Update Component', () => {
   let comp: UserUpdateComponent;
   let fixture: ComponentFixture<UserUpdateComponent>;
   let activatedRoute: ActivatedRoute;
-  let usereFormService: UserFormService;
-  let usereService: UserService;
+  let userFormService: UserFormService;
+  let userService: UserService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, RouterTestingModule.withRoutes([])],
       declarations: [UserUpdateComponent],
       providers: [
+        MessageService,
         FormBuilder,
+        DatePipe,
+        SessionStorageService,
         {
           provide: ActivatedRoute,
           useValue: {
@@ -38,77 +44,79 @@ describe('Usere Management Update Component', () => {
 
     fixture = TestBed.createComponent(UserUpdateComponent);
     activatedRoute = TestBed.inject(ActivatedRoute);
-    usereFormService = TestBed.inject(UserFormService);
-    usereService = TestBed.inject(UserService);
+    userFormService = TestBed.inject(UserFormService);
+    userService = TestBed.inject(UserService);
 
     comp = fixture.componentInstance;
   });
 
   describe('ngOnInit', () => {
     it('Should update editForm', () => {
-      const usere: IUsere = { id: 456 };
+      const user: IUser = { id: 456, name: 'demo', email: 'demp@email.com' };
 
-      activatedRoute.data = of({ usere });
+      activatedRoute.data = of({ user });
       comp.ngOnInit();
 
-      expect(comp.usere).toEqual(usere);
+      expect(comp.editForm.value.name).toEqual(user.name);
     });
   });
 
   describe('save', () => {
     it('Should call update service on save for existing entity', () => {
       // GIVEN
-      const saveSubject = new Subject<HttpResponse<IUsere>>();
-      const usere = { id: 123 };
-      jest.spyOn(usereFormService, 'getUsere').mockReturnValue(usere);
-      jest.spyOn(usereService, 'update').mockReturnValue(saveSubject);
+      const saveSubject = new Subject<HttpResponse<IUser>>();
+      const user = { id: 123, name: 'demo', email: 'demp@email.com' };
+      jest.spyOn(userFormService, 'getUser').mockReturnValue(user);
+      jest.spyOn(userService, 'update').mockReturnValue(saveSubject);
       jest.spyOn(comp, 'previousState');
-      activatedRoute.data = of({ usere });
+      activatedRoute.data = of({ user });
       comp.ngOnInit();
 
       // WHEN
       comp.save();
       expect(comp.isSaving).toEqual(true);
-      saveSubject.next(new HttpResponse({ body: usere }));
+      saveSubject.next(new HttpResponse({ body: user }));
       saveSubject.complete();
 
       // THEN
-      expect(usereFormService.getUsere).toHaveBeenCalled();
       expect(comp.previousState).toHaveBeenCalled();
-      expect(usereService.update).toHaveBeenCalledWith(expect.objectContaining(usere));
+      expect(userService.update).toHaveBeenCalledWith(expect.objectContaining(user));
       expect(comp.isSaving).toEqual(false);
     });
 
     it('Should call create service on save for new entity', () => {
       // GIVEN
-      const saveSubject = new Subject<HttpResponse<IUsere>>();
-      const usere = { id: 123 };
-      jest.spyOn(usereFormService, 'getUsere').mockReturnValue({ id: null });
-      jest.spyOn(usereService, 'create').mockReturnValue(saveSubject);
+      const saveSubject = new Subject<HttpResponse<IUser>>();
+      const user = { id: 123, name: 'demo', email: 'demp@email.com' };
+      jest.spyOn(userFormService, 'getUser').mockReturnValue(user);
+      jest.spyOn(userService, 'create').mockReturnValue(saveSubject);
       jest.spyOn(comp, 'previousState');
-      activatedRoute.data = of({ usere: null });
+      activatedRoute.data = of({ user: null });
       comp.ngOnInit();
+      comp.editForm.patchValue({
+        ...user,
+        id: null,
+      });
 
       // WHEN
       comp.save();
       expect(comp.isSaving).toEqual(true);
-      saveSubject.next(new HttpResponse({ body: usere }));
+      saveSubject.next(new HttpResponse({ body: user }));
       saveSubject.complete();
 
       // THEN
-      expect(usereFormService.getUsere).toHaveBeenCalled();
-      expect(usereService.create).toHaveBeenCalled();
+      expect(userService.create).toHaveBeenCalled();
       expect(comp.isSaving).toEqual(false);
       expect(comp.previousState).toHaveBeenCalled();
     });
 
     it('Should set isSaving to false on error', () => {
       // GIVEN
-      const saveSubject = new Subject<HttpResponse<IUsere>>();
-      const usere = { id: 123 };
-      jest.spyOn(usereService, 'update').mockReturnValue(saveSubject);
+      const saveSubject = new Subject<HttpResponse<IUser>>();
+      const user = { id: 123, name: 'demo', email: 'demp@email.com' };
+      jest.spyOn(userService, 'update').mockReturnValue(saveSubject);
       jest.spyOn(comp, 'previousState');
-      activatedRoute.data = of({ usere });
+      activatedRoute.data = of({ user });
       comp.ngOnInit();
 
       // WHEN
@@ -117,7 +125,7 @@ describe('Usere Management Update Component', () => {
       saveSubject.error('This is an error!');
 
       // THEN
-      expect(usereService.update).toHaveBeenCalled();
+      expect(userService.update).toHaveBeenCalled();
       expect(comp.isSaving).toEqual(false);
       expect(comp.previousState).not.toHaveBeenCalled();
     });

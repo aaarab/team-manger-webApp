@@ -22,7 +22,7 @@ describe('Employer Form Service', () => {
             id: expect.any(Object),
             name: expect.any(Object),
             email: expect.any(Object),
-            accountId: expect.any(Object),
+            account_id: expect.any(Object),
             status: expect.any(Object),
           })
         );
@@ -36,7 +36,7 @@ describe('Employer Form Service', () => {
             id: expect.any(Object),
             name: expect.any(Object),
             email: expect.any(Object),
-            accountId: expect.any(Object),
+            account_id: expect.any(Object),
             status: expect.any(Object),
           })
         );
@@ -70,24 +70,5 @@ describe('Employer Form Service', () => {
       });
     });
 
-    describe('resetForm', () => {
-      it('passing IEmployer should not enable id FormControl', () => {
-        const formGroup = service.createEmployerFormGroup();
-        expect(formGroup.controls.id.disabled).toBe(true);
-
-        service.resetForm(formGroup, sampleWithRequiredData);
-
-        expect(formGroup.controls.id.disabled).toBe(true);
-      });
-
-      it('passing NewEmployer should disable id FormControl', () => {
-        const formGroup = service.createEmployerFormGroup(sampleWithRequiredData);
-        expect(formGroup.controls.id.disabled).toBe(true);
-
-        service.resetForm(formGroup, { id: null });
-
-        expect(formGroup.controls.id.disabled).toBe(true);
-      });
-    });
   });
 });

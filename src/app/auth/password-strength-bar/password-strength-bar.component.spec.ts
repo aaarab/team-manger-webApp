@@ -8,7 +8,7 @@ describe('PasswordStrengthBarComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PasswordStrengthBarComponent ]
+      imports: [ PasswordStrengthBarComponent ]
     })
     .compileComponents();
 

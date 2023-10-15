@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { EventLogsComponent } from './event-logs.component';
+import {HttpClientTestingModule} from "@angular/common/http/testing";
+import {DynamicDialogConfig} from "primeng/dynamicdialog";
 
 describe('EventLogsComponent', () => {
   let component: EventLogsComponent;
@@ -8,7 +10,8 @@ describe('EventLogsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ EventLogsComponent ]
+      imports: [ EventLogsComponent, HttpClientTestingModule ],
+      providers: [DynamicDialogConfig]
     })
     .compileComponents();
 

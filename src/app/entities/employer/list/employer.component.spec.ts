@@ -1,18 +1,21 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, fakeAsync, TestBed} from '@angular/core/testing';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { of } from 'rxjs';
+import {BehaviorSubject, of} from 'rxjs';
 
 import { EmployerService } from '../service/employer.service';
 
 import { EmployerComponent } from './employer.component';
+import {Confirmation, ConfirmationService, MessageService} from "primeng/api";
+import {DialogService} from "primeng/dynamicdialog";
 
 describe('Employer Management Component', () => {
   let comp: EmployerComponent;
   let fixture: ComponentFixture<EmployerComponent>;
   let service: EmployerService;
+  let confirmationService: ConfirmationService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -21,20 +24,11 @@ describe('Employer Management Component', () => {
       providers: [
         {
           provide: ActivatedRoute,
-          useValue: {
-            data: of({
-              defaultSort: 'id,asc',
-            }),
-            queryParamMap: of(
-              jest.requireActual('@angular/router').convertToParamMap({
-                page: '1',
-                size: '1',
-                sort: 'id,desc',
-              })
-            ),
-            snapshot: { queryParams: {} },
-          },
+          useValue: {data: of(), queryParams: new BehaviorSubject({})},
         },
+        ConfirmationService,
+        MessageService,
+        DialogService,
       ],
     })
       .overrideTemplate(EmployerComponent, '')
@@ -43,6 +37,7 @@ describe('Employer Management Component', () => {
     fixture = TestBed.createComponent(EmployerComponent);
     comp = fixture.componentInstance;
     service = TestBed.inject(EmployerService);
+    confirmationService = TestBed.inject(ConfirmationService);
 
     const headers = new HttpHeaders();
     jest.spyOn(service, 'query').mockReturnValue(
@@ -73,4 +68,22 @@ describe('Employer Management Component', () => {
       expect(id).toBe(entity.id);
     });
   });
+
+  it('should call delete service using confirmDialog', fakeAsync(() => {
+    // GIVEN
+    jest.spyOn(service, 'delete').mockReturnValue(of({} as any));
+    jest.spyOn(confirmationService, 'confirm').mockImplementation((confirmation: Confirmation) => {
+      if (confirmation.accept) {
+        confirmation.accept();
+      }
+      return confirmationService;
+    });
+
+    // WHEN
+    comp.delete(123);
+
+    // THEN
+    expect(confirmationService.confirm).toHaveBeenCalled();
+    expect(service.delete).toHaveBeenCalledWith(123);
+  }));
 });

@@ -8,8 +8,6 @@ import { AccountService, RestAccount } from './account.service';
 
 const requireRestSample: RestAccount = {
   ...sampleWithRequiredData,
-  created_at: sampleWithRequiredData.created?.toJSON(),
-  updated_at: sampleWithRequiredData.updated?.toJSON(),
 };
 
 describe('Account Service', () => {
