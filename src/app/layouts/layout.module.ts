@@ -8,6 +8,7 @@ import {ConfirmationService, MessageService} from "primeng/api";
 import {RouterOutlet} from "@angular/router";
 import {MenubarModule} from "primeng/menubar";
 import { TopbarComponent } from './components/topbar/topbar.component';
+import {AclComponent} from "../components/acl/acl.component";
 
 
 
@@ -18,11 +19,12 @@ import { TopbarComponent } from './components/topbar/topbar.component';
     FooterComponent,
     TopbarComponent
   ],
-  imports: [
-    SharedModule,
-    RouterOutlet,
-    MenubarModule,
-  ],
+    imports: [
+        SharedModule,
+        RouterOutlet,
+        MenubarModule,
+        AclComponent,
+    ],
   exports: [
     LayoutComponent
   ],

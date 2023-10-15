@@ -11,12 +11,14 @@ import {ApplicationConfigService} from "./core/config/application-config.service
 import {environment} from "../environments/environment";
 import {NgxWebstorageModule} from "ngx-webstorage";
 import {httpInterceptorProviders} from "./core/interceptor";
+import {HomeModule} from "./home/home.module";
 
 @NgModule({
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    HomeModule,
     AppRoutingModule,
     SharedModule,
     LayoutModule,

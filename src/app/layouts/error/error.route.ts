@@ -8,7 +8,7 @@ export const errorRoute: Routes = [
     title: 'error'
   },
   {
-    path: 'accessdenide',
+    path: 'accessdenied',
     component: ErrorComponent,
     data: {
       errorMessage: 'Unauthorized Action 403'
