@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AclComponent } from './acl.component';
+import {SessionStorageService} from "ngx-webstorage";
+import {HttpClientTestingModule} from "@angular/common/http/testing";
 
 describe('AclComponent', () => {
   let component: AclComponent;
@@ -8,7 +10,8 @@ describe('AclComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AclComponent ]
+      imports: [ AclComponent, HttpClientTestingModule ],
+      providers: [SessionStorageService]
     })
     .compileComponents();
 

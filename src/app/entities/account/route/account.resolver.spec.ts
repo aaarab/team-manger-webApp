@@ -43,7 +43,7 @@ describe('Account routing resolve service', () => {
   describe('resolve', () => {
     it('should return IAccount returned by find', () => {
       // GIVEN
-      service.find = jest.fn(id => of(new HttpResponse({ body: { id } })));
+      service.find = jest.fn((id) => of(new HttpResponse({ body: { id, name: 'demo', email: 'demo@email.com' } })));
       mockActivatedRouteSnapshot.params = { id: 123 };
 
       // WHEN
@@ -53,7 +53,7 @@ describe('Account routing resolve service', () => {
 
       // THEN
       expect(service.find).toBeCalledWith(123);
-      expect(resultAccount).toEqual({ id: 123 });
+      expect(resultAccount).toEqual({ id: 123, name: 'demo', email: 'demo@email.com' });
     });
 
     it('should return null if id is not provided', () => {

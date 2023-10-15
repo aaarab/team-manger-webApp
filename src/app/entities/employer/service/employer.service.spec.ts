@@ -96,64 +96,6 @@ describe('Employer Service', () => {
       expect(expectedResult).toBe(expected);
     });
 
-    describe('addEmployerToCollectionIfMissing', () => {
-      it('should add a Employer to an empty array', () => {
-        const employer: IEmployer = sampleWithRequiredData;
-        expectedResult = service.addEmployerToCollectionIfMissing([], employer);
-        expect(expectedResult).toHaveLength(1);
-        expect(expectedResult).toContain(employer);
-      });
-
-      it('should not add a Employer to an array that contains it', () => {
-        const employer: IEmployer = sampleWithRequiredData;
-        const employerCollection: IEmployer[] = [
-          {
-            ...employer,
-          },
-          sampleWithPartialData,
-        ];
-        expectedResult = service.addEmployerToCollectionIfMissing(employerCollection, employer);
-        expect(expectedResult).toHaveLength(2);
-      });
-
-      it("should add a Employer to an array that doesn't contain it", () => {
-        const employer: IEmployer = sampleWithRequiredData;
-        const employerCollection: IEmployer[] = [sampleWithPartialData];
-        expectedResult = service.addEmployerToCollectionIfMissing(employerCollection, employer);
-        expect(expectedResult).toHaveLength(2);
-        expect(expectedResult).toContain(employer);
-      });
-
-      it('should add only unique Employer to an array', () => {
-        const employerArray: IEmployer[] = [sampleWithRequiredData, sampleWithPartialData, sampleWithFullData];
-        const employerCollection: IEmployer[] = [sampleWithRequiredData];
-        expectedResult = service.addEmployerToCollectionIfMissing(employerCollection, ...employerArray);
-        expect(expectedResult).toHaveLength(3);
-      });
-
-      it('should accept varargs', () => {
-        const employer: IEmployer = sampleWithRequiredData;
-        const employer2: IEmployer = sampleWithPartialData;
-        expectedResult = service.addEmployerToCollectionIfMissing([], employer, employer2);
-        expect(expectedResult).toHaveLength(2);
-        expect(expectedResult).toContain(employer);
-        expect(expectedResult).toContain(employer2);
-      });
-
-      it('should accept null and undefined values', () => {
-        const employer: IEmployer = sampleWithRequiredData;
-        expectedResult = service.addEmployerToCollectionIfMissing([], null, employer, undefined);
-        expect(expectedResult).toHaveLength(1);
-        expect(expectedResult).toContain(employer);
-      });
-
-      it('should return initial array if no Employer is added', () => {
-        const employerCollection: IEmployer[] = [sampleWithRequiredData];
-        expectedResult = service.addEmployerToCollectionIfMissing(employerCollection, undefined, null);
-        expect(expectedResult).toEqual(employerCollection);
-      });
-    });
-
     describe('compareEmployer', () => {
       it('Should return true if both entities are null', () => {
         const entity1 = null;

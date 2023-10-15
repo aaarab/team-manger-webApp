@@ -7,9 +7,10 @@ export const sampleWithRequiredData: IAccount = {
   email: 'demo@email.com',
 };
 
-export const sampleWithPartialData: Partial<IAccount> = {
+export const sampleWithPartialData: IAccount = {
   id: 18732,
   name: 'Games scalable',
+  email: 'demo@email.com'
 };
 
 export const sampleWithFullData: IAccount = {

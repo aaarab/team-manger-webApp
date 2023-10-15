@@ -51,7 +51,7 @@ describe('Employer routing resolve service', () => {
       });
 
       // THEN
-      expect(service.find).toBeCalledWith(123);
+      expect(service.find).toBeCalledWith(123, { with: 'account' });
       expect(resultEmployer).toEqual({ id: 123 });
     });
 
@@ -81,7 +81,7 @@ describe('Employer routing resolve service', () => {
       });
 
       // THEN
-      expect(service.find).toBeCalledWith(123);
+      expect(service.find).toBeCalledWith(123, { with: 'account' });
       expect(resultEmployer).toEqual(undefined);
       expect(mockRouter.navigate).toHaveBeenCalledWith(['404']);
     });

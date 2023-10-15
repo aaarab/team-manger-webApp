@@ -5,22 +5,24 @@ import { ActivatedRouteSnapshot, ActivatedRoute, Router, convertToParamMap } fro
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
 
-import { IUsere } from '../usere.model';
-import { UserService } from '../service/usere.service';
+import { IUser } from '../user.model';
+import { UserService } from '../service/user.service';
 
-import { UserRoutingResolveService } from './usere-routing-resolve.service';
+import { UserRoutingResolveService } from './user-routing-resolve.service';
+import {DatePipe} from "@angular/common";
 
-describe('Usere routing resolve service', () => {
+describe('User routing resolve service', () => {
   let mockRouter: Router;
   let mockActivatedRouteSnapshot: ActivatedRouteSnapshot;
   let routingResolveService: UserRoutingResolveService;
   let service: UserService;
-  let resultUsere: IUsere | null | undefined;
+  let resultUser: IUser | null | undefined;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, RouterTestingModule.withRoutes([])],
       providers: [
+        DatePipe,
         {
           provide: ActivatedRoute,
           useValue: {
@@ -36,23 +38,23 @@ describe('Usere routing resolve service', () => {
     mockActivatedRouteSnapshot = TestBed.inject(ActivatedRoute).snapshot;
     routingResolveService = TestBed.inject(UserRoutingResolveService);
     service = TestBed.inject(UserService);
-    resultUsere = undefined;
+    resultUser = undefined;
   });
 
   describe('resolve', () => {
-    it('should return IUsere returned by find', () => {
+    it('should return IUser returned by find', () => {
       // GIVEN
-      service.find = jest.fn(id => of(new HttpResponse({ body: { id } })));
+      service.find = jest.fn(id => of(new HttpResponse({ body: { id, name: 'demi', email: 'email@email.com' } })));
       mockActivatedRouteSnapshot.params = { id: 123 };
 
       // WHEN
       routingResolveService.resolve(mockActivatedRouteSnapshot).subscribe(result => {
-        resultUsere = result;
+        resultUser = result;
       });
 
       // THEN
       expect(service.find).toBeCalledWith(123);
-      expect(resultUsere).toEqual({ id: 123 });
+      expect(resultUser).toEqual({ id: 123, name: 'demi', email: 'email@email.com' });
     });
 
     it('should return null if id is not provided', () => {
@@ -62,27 +64,27 @@ describe('Usere routing resolve service', () => {
 
       // WHEN
       routingResolveService.resolve(mockActivatedRouteSnapshot).subscribe(result => {
-        resultUsere = result;
+        resultUser = result;
       });
 
       // THEN
       expect(service.find).not.toBeCalled();
-      expect(resultUsere).toEqual(null);
+      expect(resultUser).toEqual(null);
     });
 
     it('should route to 404 page if data not found in server', () => {
       // GIVEN
-      jest.spyOn(service, 'find').mockReturnValue(of(new HttpResponse<IUsere>({ body: null })));
+      jest.spyOn(service, 'find').mockReturnValue(of(new HttpResponse<IUser>({ body: null })));
       mockActivatedRouteSnapshot.params = { id: 123 };
 
       // WHEN
       routingResolveService.resolve(mockActivatedRouteSnapshot).subscribe(result => {
-        resultUsere = result;
+        resultUser = result;
       });
 
       // THEN
       expect(service.find).toBeCalledWith(123);
-      expect(resultUsere).toEqual(undefined);
+      expect(resultUser).toEqual(undefined);
       expect(mockRouter.navigate).toHaveBeenCalledWith(['404']);
     });
   });

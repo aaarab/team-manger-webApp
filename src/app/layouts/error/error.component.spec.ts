@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ErrorComponent } from './error.component';
+import {ActivatedRoute} from "@angular/router";
+import {of} from "rxjs";
 
 describe('ErrorComponent', () => {
   let component: ErrorComponent;
@@ -8,7 +10,13 @@ describe('ErrorComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ErrorComponent ]
+      declarations: [ ErrorComponent ],
+      providers: [
+        {
+          provide: ActivatedRoute,
+          useValue: { data: of({ errorMessage: 'Not Found' })  }
+        }
+      ]
     })
     .compileComponents();
 

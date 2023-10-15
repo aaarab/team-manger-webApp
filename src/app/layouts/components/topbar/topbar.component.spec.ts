@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TopbarComponent } from './topbar.component';
+import {LocalStorageService, SessionStorageService} from "ngx-webstorage";
+import {HttpClientTestingModule} from "@angular/common/http/testing";
+import {DialogService} from "primeng/dynamicdialog";
 
 describe('TopbarComponent', () => {
   let component: TopbarComponent;
@@ -8,7 +11,9 @@ describe('TopbarComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TopbarComponent ]
+      imports: [HttpClientTestingModule],
+      declarations: [ TopbarComponent ],
+      providers: [LocalStorageService, SessionStorageService, DialogService]
     })
     .compileComponents();
 

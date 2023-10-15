@@ -1,39 +1,33 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, fakeAsync, TestBed} from '@angular/core/testing';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { of } from 'rxjs';
+import {BehaviorSubject, of} from 'rxjs';
 
-import { UserService } from '../service/usere.service';
+import { UserService } from '../service/user.service';
 
-import { UserComponent } from './usere.component';
+import { UserComponent } from './user.component';
+import {Confirmation, ConfirmationService, MessageService} from "primeng/api";
+import {DatePipe} from "@angular/common";
 
-describe('Usere Management Component', () => {
+describe('User Management Component', () => {
   let comp: UserComponent;
   let fixture: ComponentFixture<UserComponent>;
   let service: UserService;
+  let confirmationService: ConfirmationService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule.withRoutes([{ path: 'usere', component: UserComponent }]), HttpClientTestingModule],
+      imports: [RouterTestingModule.withRoutes([{ path: 'user', component: UserComponent }]), HttpClientTestingModule],
       declarations: [UserComponent],
       providers: [
+        ConfirmationService,
+        MessageService,
+        DatePipe,
         {
           provide: ActivatedRoute,
-          useValue: {
-            data: of({
-              defaultSort: 'id,asc',
-            }),
-            queryParamMap: of(
-              jest.requireActual('@angular/router').convertToParamMap({
-                page: '1',
-                size: '1',
-                sort: 'id,desc',
-              })
-            ),
-            snapshot: { queryParams: {} },
-          },
+          useValue: {data: of(), queryParams: new BehaviorSubject({})},
         },
       ],
     })
@@ -43,12 +37,13 @@ describe('Usere Management Component', () => {
     fixture = TestBed.createComponent(UserComponent);
     comp = fixture.componentInstance;
     service = TestBed.inject(UserService);
+    confirmationService = TestBed.inject(ConfirmationService);
 
     const headers = new HttpHeaders();
     jest.spyOn(service, 'query').mockReturnValue(
       of(
         new HttpResponse({
-          body: [{ id: 123 }],
+          body: [{ id: 123, name: 'demo', email: 'demo@email.com' }],
           headers,
         })
       )
@@ -61,16 +56,33 @@ describe('Usere Management Component', () => {
 
     // THEN
     expect(service.query).toHaveBeenCalled();
-    expect(comp.useres?.[0]).toEqual(expect.objectContaining({ id: 123 }));
+    expect(comp.users?.[0]).toEqual(expect.objectContaining({ id: 123 }));
   });
 
   describe('trackId', () => {
-    it('Should forward to usereService', () => {
-      const entity = { id: 123 };
-      jest.spyOn(service, 'getUsereIdentifier');
+    it('Should forward to userService', () => {
+      const entity = { id: 123, name: 'demo', email: 'demo@email.com' };
+      jest.spyOn(service, 'getUserIdentifier');
       const id = comp.trackId(0, entity);
-      expect(service.getUsereIdentifier).toHaveBeenCalledWith(entity);
+      expect(service.getUserIdentifier).toHaveBeenCalledWith(entity);
       expect(id).toBe(entity.id);
     });
   });
+  it('should call delete service using confirmDialog', fakeAsync(() => {
+    // GIVEN
+    jest.spyOn(service, 'delete').mockReturnValue(of({} as any));
+    jest.spyOn(confirmationService, 'confirm').mockImplementation((confirmation: Confirmation) => {
+      if (confirmation.accept) {
+        confirmation.accept();
+      }
+      return confirmationService;
+    });
+
+    // WHEN
+    comp.delete(123);
+
+    // THEN
+    expect(confirmationService.confirm).toHaveBeenCalled();
+    expect(service.delete).toHaveBeenCalledWith(123);
+  }));
 });

@@ -3,8 +3,6 @@ import { take } from "rxjs";
 import { Account } from "../../../core/auth/account.model";
 import { AccountService } from "../../../core/auth/account.service";
 import {IUser} from "../user.model";
-import {DatePipe} from "@angular/common";
-import {DATE_FORMAT} from "../../../core/constants/input.contants";
 
 @Component({
   selector: 'app-profile',
@@ -18,7 +16,6 @@ export class ProfileComponent implements OnInit {
 
   constructor(
     private accountService: AccountService,
-    private datePipe: DatePipe,
   ) {}
 
   ngOnInit(): void {

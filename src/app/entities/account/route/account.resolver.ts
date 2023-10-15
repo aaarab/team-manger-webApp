@@ -17,7 +17,7 @@ export class AccountRoutingResolveService implements Resolve<IAccount | null> {
   resolve(route: ActivatedRouteSnapshot): Observable<IAccount | null>  {
     const id = route.params['id'];
     if (id) {
-      return this.service.find(id, { with: 'accountOwner,parentAccount,accountPricelist' }).pipe(
+      return this.service.find(id).pipe(
         mergeMap((account: HttpResponse<IAccount>) => {
           if (account.body) {
             return of(account.body);

@@ -11,8 +11,6 @@ type UserFormGroupContent = {
   address: FormControl<IUser['address']>;
   birthday: FormControl<IUser['birthday']>;
   phone: FormControl<IUser['phone']>;
-  created_at: FormControl<IUser['created_at']>;
-  updated_at: FormControl<IUser['updated_at']>;
 };
 
 export type UserFormGroup = FormGroup<UserFormGroupContent>;
@@ -38,8 +36,6 @@ export class UserFormService {
       phone: new FormControl(userRawValue.phone),
       birthday: new FormControl(userRawValue.birthday),
       address: new FormControl(userRawValue.address),
-      created_at: new FormControl(userRawValue.created_at),
-      updated_at: new FormControl(userRawValue.updated_at),
     });
   }
 

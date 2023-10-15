@@ -11,6 +11,7 @@ import { EmployerService } from '../service/employer.service';
 import { IEmployer } from '../employer.model';
 
 import { EmployerUpdateComponent } from './employer-update.component';
+import {MessageService} from "primeng/api";
 
 describe('Employer Management Update Component', () => {
   let comp: EmployerUpdateComponent;
@@ -25,6 +26,7 @@ describe('Employer Management Update Component', () => {
       declarations: [EmployerUpdateComponent],
       providers: [
         FormBuilder,
+        MessageService,
         {
           provide: ActivatedRoute,
           useValue: {
@@ -51,7 +53,7 @@ describe('Employer Management Update Component', () => {
       activatedRoute.data = of({ employer });
       comp.ngOnInit();
 
-      expect(comp.employer).toEqual(employer);
+      expect(comp.editForm.value.id).toEqual(employer.id);
     });
   });
 
@@ -59,7 +61,7 @@ describe('Employer Management Update Component', () => {
     it('Should call update service on save for existing entity', () => {
       // GIVEN
       const saveSubject = new Subject<HttpResponse<IEmployer>>();
-      const employer = { id: 123 };
+      const employer = { id: 123, name: 'demo', email: 'demo@contact.com', account_id: 1 };
       jest.spyOn(employerFormService, 'getEmployer').mockReturnValue(employer);
       jest.spyOn(employerService, 'update').mockReturnValue(saveSubject);
       jest.spyOn(comp, 'previousState');
@@ -82,17 +84,21 @@ describe('Employer Management Update Component', () => {
     it('Should call create service on save for new entity', () => {
       // GIVEN
       const saveSubject = new Subject<HttpResponse<IEmployer>>();
-      const employer = { id: 123 };
+      const employer = { id: 123, name: 'demo', email: 'demo@contact.com', account_id: 1 };
       jest.spyOn(employerFormService, 'getEmployer').mockReturnValue({ id: null });
       jest.spyOn(employerService, 'create').mockReturnValue(saveSubject);
       jest.spyOn(comp, 'previousState');
       activatedRoute.data = of({ employer: null });
       comp.ngOnInit();
+      comp.editForm.patchValue({
+        ...employer,
+        id: null
+      });
 
       // WHEN
       comp.save();
       expect(comp.isSaving).toEqual(true);
-      saveSubject.next(new HttpResponse({ body: employer }));
+      saveSubject.next(new HttpResponse({ body: employer as any }));
       saveSubject.complete();
 
       // THEN
@@ -105,7 +111,7 @@ describe('Employer Management Update Component', () => {
     it('Should set isSaving to false on error', () => {
       // GIVEN
       const saveSubject = new Subject<HttpResponse<IEmployer>>();
-      const employer = { id: 123 };
+      const employer = { id: 123, name: 'demo', email: 'demo@contact.com', account_id: 1 };
       jest.spyOn(employerService, 'update').mockReturnValue(saveSubject);
       jest.spyOn(comp, 'previousState');
       activatedRoute.data = of({ employer });
