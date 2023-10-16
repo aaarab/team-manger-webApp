@@ -19,7 +19,6 @@
             formControlName="email"
             data-cy="email"
             autocomplete="off"
-            class="form-control bg-transparent"
           />
           <ng-container *ngIf="loginForm.controls.email.errors && (loginForm.controls.email.dirty || loginForm.controls.email.touched)">
             <p-message
@@ -47,8 +46,6 @@
             data-cy="password"
             name="password"
             formControlName="password"
-            autocomplete="off"
-            class="form-control bg-transparent"
           />
           <ng-container *ngIf="loginForm.controls.password.errors && (loginForm.controls.password.dirty || loginForm.controls.password.touched)">
             <p-message
@@ -64,7 +61,7 @@
         <!--begin::Wrapper-->
         <div class="d-flex flex-stack flex-wrap gap-3 fs-base fw-semibold mb-8">
           <div>
-            <!--        <span appTranslate="global.form.rememberMe"></span>-->
+            <span>Remember Me </span>
             <p-inputSwitch formControlName="rememberMe" name="rememberMe"></p-inputSwitch>
           </div>
           <!--end::Link-->

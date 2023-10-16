@@ -23,7 +23,9 @@ export class EmployerComponent implements OnInit {
     protected confirmationService: ConfirmationService,
     protected messageService: MessageService,
     protected dialogService: DialogService,
-  ) {}
+  ) {
+    this.loading = true;
+  }
 
   trackId = (_index: number, item: IEmployer): number => this.employerService.getEmployerIdentifier(item);
 
