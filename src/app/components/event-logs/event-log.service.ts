@@ -4,7 +4,6 @@ import {ApplicationConfigService} from "../../core/config/application-config.ser
 import {Observable} from "rxjs";
 import {createRequestOption} from "../../core/request/request-util";
 import {IUser} from "../../entities/user/user.model";
-import {IAccount} from "../../entities/account/account.model";
 
 export interface IEventLog {
   action: string;
@@ -19,7 +18,6 @@ export interface IEventLog {
   causer_id?: number | null;
   created_at: Date;
   creator?: IUser | null;
-  account?: IAccount | null;
 }
 
 @Injectable({
